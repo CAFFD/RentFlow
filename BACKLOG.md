@@ -33,11 +33,13 @@ Etapa 00 concluída em 24/11/2026. P0 obrigatório. Prioridade do enunciado acim
 - [x] Comunicação offline/retomada, replay idêntico, conflito antes do commit e falha após commit antes do ACK comprovados.
 - [x] E01–E06 executados com IDs, contagens SQL, métricas de fila e logs reais. [Relatório](docs/evidencias/etapa-04.md).
 
-### Diferencial explicitamente fora deste ciclo
+### Diferencial concluído na Etapa 05
 
-- [ ] E07 Circuit Breaker + mock HTTP. A comunicação já persiste avisos PENDING para uma evolução futura.
+- [x] E07 Circuit Breaker + provedor HTTP local: transições CLOSED → OPEN → HALF_OPEN → CLOSED, bloqueio sem chamada externa e recuperação comprovados. [Evidência](docs/evidencias/etapa-05.md).
 
-## 05 — Entrega e defesa (P0)
-- [ ] Congelar código funcional, guardar evidências de ensaio e conferir link de repo.
-- [ ] Preencher relatório com resultados medidos, diagramas finais, contrato, matriz, limitações e referências.
+## 05 — Estabilização final e defesa (P0)
+- [x] Núcleo preservado no commit `4abcead` e tag local `core-etapas-00-04`, sem segredos.
+- [x] Circuit Breaker isolado, migração incremental, E07 e regressão do núcleo aprovados.
+- [x] Guardar evidências de ensaio e atualizar diagrama, comandos e limitações do repositório.
+- [ ] Conferir e publicar o link do repositório remoto; nenhum remoto foi configurado automaticamente.
 - [ ] Cinco integrantes, ensaio cronometrado de 20 min, contingência com evidências reais gravadas.

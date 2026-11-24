@@ -1,0 +1,2 @@
+RUN 4ff4da9e-5b2e-4aa7-ac73-9cd59383d323 UTC=2026-11-24T13:57:11.3966738Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+FAIL Filas principais devem estar vazias, sem unacked

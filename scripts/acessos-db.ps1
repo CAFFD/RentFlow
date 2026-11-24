@@ -29,6 +29,9 @@ GRANT USAGE ON SCHEMA $schema TO $login;
 GRANT SELECT, INSERT ON ALL TABLES IN SCHEMA $schema TO $login;
 "@
     if ($schema -eq 'producer') { $sql += "`nGRANT UPDATE (estado,motivo,concluida) ON producer.tentativas TO $login;" }
+    if ($schema -eq 'comunicacao') {
+        $sql += "`nGRANT UPDATE (estado,tentativas_http,bloqueios_circuito,ultimo_erro,ultima_tentativa,enviado_em,claim_token,claim_until) ON comunicacao.efeitos TO $login;"
+    }
     $sql += "`nCOMMIT;"
     $sql | docker compose --project-directory $raiz -p rentflow -f "$raiz/compose.yaml" exec -T postgres psql -X -q -v ON_ERROR_STOP=1 -U $admin.POSTGRES_USER -d $admin.POSTGRES_DB > $null
     if ($LASTEXITCODE) { throw "Permissoes falharam para $schema" }

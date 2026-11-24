@@ -2,12 +2,14 @@ param(
     [ValidateSet('iniciar','estado','parar')] [string]$Acao='estado',
     [ValidateSet('todos','producer','retirada','comunicacao','manutencao','auditoria','Worker-A','Worker-B')] [string]$Nome='todos',
     [switch]$TesteFalha,
+    [switch]$Notificacoes,
     [int]$Porta
 )
 . "$PSScriptRoot/comum.ps1"
 $portas=[ordered]@{producer=8080;retirada=8081;comunicacao=8082;manutencao=8083;auditoria=8084;'Worker-A'=8085;'Worker-B'=8086}
 if ($Porta -and ($Nome -eq 'todos' -or $Porta -lt 1 -or $Porta -gt 65535)) { throw 'Porta individual invalida' }
 if ($TesteFalha -and $Nome -ne 'retirada') { throw 'Gancho exclusivo da retirada' }
+if ($Notificacoes -and $Nome -ne 'comunicacao') { throw 'Integracao HTTP exclusiva da comunicacao' }
 $dir=Join-Path $raiz '.runtime'
 [void][IO.Directory]::CreateDirectory($dir)
 if ($Acao -eq 'iniciar') {
@@ -47,7 +49,9 @@ foreach ($instancia in $lista) {
         "$instancia pid=$($reg.pid) porta=$($reg.porta) health=$($health.status)"; continue
     }
     if ($atual) {
-        if (($Porta -and $Porta -ne $reg.porta) -or ([bool]$TesteFalha -ne $atual.CommandLine.Contains('--rentflow.teste-falha=true'))) {
+        if (($Porta -and $Porta -ne $reg.porta) -or
+                ([bool]$TesteFalha -ne $atual.CommandLine.Contains('--rentflow.teste-falha=true')) -or
+                ([bool]$Notificacoes -ne $atual.CommandLine.Contains('--rentflow.notification.enabled=true'))) {
             throw "$instancia ja ativo com outra configuracao"
         }
         $saude=Invoke-RestMethod "http://127.0.0.1:$($reg.porta)/actuator/health" -TimeoutSec 5
@@ -61,6 +65,7 @@ foreach ($instancia in $lista) {
     $log=Join-Path $dir "$instancia-$token"
     $argumentos=@('-Xms24m','-Xmx96m','-XX:ActiveProcessorCount=2',"-Drentflow.exec=$token",'-jar',("`"$jar`""),"--server.port=$port")
     if ($TesteFalha) { $argumentos+='--rentflow.teste-falha=true' }
+    if ($Notificacoes) { $argumentos+='--rentflow.notification.enabled=true' }
     $escopo=@{
         WORKER_ID=$instancia; POSTGRES_DB=$dbNome; POSTGRES_USER="rentflow_app_$modulo";
         POSTGRES_PASSWORD=$senhas.$modulo; RABBITMQ_DEFAULT_USER=$brokerUser; RABBITMQ_DEFAULT_PASS=$brokerPass

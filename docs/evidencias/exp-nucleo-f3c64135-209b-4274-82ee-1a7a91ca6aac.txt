@@ -1,0 +1,19 @@
+RUN f3c64135-209b-4274-82ee-1a7a91ca6aac UTC=2026-11-24T13:58:30.2309535Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+PUBLICADO tipo=reserva.confirmada eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 attemptId=77eda7d9-67c0-4c09-8291-68024d944638
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=retirada outcome=ACK_COMMIT
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=retirada outcome=ACK_DUPLICATA
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=comunicacao outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_COMMIT
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=comunicacao outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_DUPLICATA
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=auditoria outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=auditoria outcome=ACK_COMMIT
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=auditoria outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=auditoria outcome=ACK_DUPLICATA
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=Worker-A outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=Worker-A outcome=ACK_COMMIT
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=Worker-B outcome=RECEBIDO redelivered=false
+LOG eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 eventType=reserva.confirmada consumerId=Worker-B outcome=ACK_DUPLICATA
+PASS duplicidade eventId=567bd849-f9f1-418f-9b09-fdf1450eaa34 tentativas=77eda7d9-67c0-4c09-8291-68024d944638,941efadf-bbaf-492f-99d3-a87b65775044 SQL=1,1,0,1,1 autorizacoesPorReserva=1 ACK_DUPLICATA=4 original=identico

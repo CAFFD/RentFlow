@@ -1,0 +1,5 @@
+RUN d716aa55-4a8d-40f1-9f3f-0766cbbef4f3 UTC=2026-11-24T13:57:55.4017012Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+ANTES consumers=1 ready=0
+PUBLICADO tipo=reserva.confirmada eventId=363bd4eb-7506-468e-af7e-49cb7555b56c attemptId=e48e784c-5e2c-4c65-94f3-ab418e4006fa
+DURANTE eventId=363bd4eb-7506-468e-af7e-49cb7555b56c consumers=0 ready=1 avisosSQL=0 retirada=1 auditoria=1 preparacao=1
+PASS DEPOIS eventId=363bd4eb-7506-468e-af7e-49cb7555b56c consumers=1 ready=0 unacked=0 avisos=1

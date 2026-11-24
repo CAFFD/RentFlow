@@ -1,0 +1,14 @@
+RUN 673204f0-6968-4fa4-965e-b7c754ff5442 UTC=2026-11-24T13:56:47.5267630Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+PUBLICADO tipo=reserva.confirmada eventId=5adb8171-9202-4c5f-917a-7af705e3f0b5 attemptId=f1337ba6-d948-408d-a2e7-d411782fb72d
+PUBLICADO tipo=reserva.confirmada eventId=251213a9-dfc0-4df5-a192-b89e0d78e5d0 attemptId=72da0a61-a9e4-4dd3-b917-52333afa322b
+PUBLICADO tipo=reserva.confirmada eventId=284a72cb-3e66-4bd7-8505-a786f158c033 attemptId=921ff3aa-578e-44de-b41f-8d21c2b9549b
+PUBLICADO tipo=reserva.confirmada eventId=e3baf97b-7c23-4762-9022-9a3720a93a93 attemptId=e8681bc0-1451-4732-aa40-2cb45777488c
+PUBLICADO tipo=reserva.confirmada eventId=691e3db1-a395-4d2c-bd92-7e0d353a562c attemptId=9ca96de4-1fc2-4fdd-b1dd-b4151dce8f1c
+PUBLICADO tipo=reserva.confirmada eventId=5e92d093-9ce4-40f9-ae67-742f049fcc2f attemptId=efffe8b4-08fa-4a9b-99f9-6873a291a45f
+PUBLICADO tipo=reserva.confirmada eventId=029a727c-e8cf-444b-8e51-802a5ccd4d8d attemptId=0c696604-66a4-4a98-99af-ab093caaad88
+PUBLICADO tipo=reserva.confirmada eventId=27110d1a-243e-410d-a119-0d11442a22d4 attemptId=c778164c-697b-4d33-83b8-27cd430ccaad
+PUBLICADO tipo=reserva.confirmada eventId=3d72582d-0a27-4ffd-8950-5c08b49be577 attemptId=8ff330fb-1f82-4f39-a655-443070485566
+PUBLICADO tipo=reserva.confirmada eventId=eebe3670-33f8-4a0a-95a7-4c5be15be8df attemptId=d2e3acd1-7af2-4189-a818-d648f115ca68
+Worker-B tarefas=5 ids=5adb8171-9202-4c5f-917a-7af705e3f0b5,284a72cb-3e66-4bd7-8505-a786f158c033,691e3db1-a395-4d2c-bd92-7e0d353a562c,029a727c-e8cf-444b-8e51-802a5ccd4d8d,3d72582d-0a27-4ffd-8950-5c08b49be577
+Worker-A tarefas=5 ids=251213a9-dfc0-4df5-a192-b89e0d78e5d0,e3baf97b-7c23-4762-9022-9a3720a93a93,5e92d093-9ce4-40f9-ae67-742f049fcc2f,27110d1a-243e-410d-a119-0d11442a22d4,eebe3670-33f8-4a0a-95a7-4c5be15be8df
+PASS concorrencia ids=10 retirada=10 comunicacao=10 auditoria=10 preparacao=10

@@ -1,0 +1,30 @@
+E07 runId=deffdd7c-1a93-437c-bc60-59588b7bd054 UTC=2026-11-24T13:54:42.0439203Z
+BASELINE estacionamento=1
+PUBLICADO tipo=reserva.cancelada eventId=42cb2f11-b704-419e-9b7f-11e7ed6e5bf5 attemptId=161f254d-0e81-495b-ab07-854fe686a272
+DESPACHO eventId=42cb2f11-b704-419e-9b7f-11e7ed6e5bf5 http=200 aviso=SENT tentativasHttp=1 bloqueios=0 circuito=CLOSED providerCalls=1
+PASS normal eventId=42cb2f11-b704-419e-9b7f-11e7ed6e5bf5 circuito=CLOSED providerCalls=1 estado=SENT
+PUBLICADO tipo=reserva.cancelada eventId=8fe42d81-6d0b-4306-895d-c2ee39854298 attemptId=9cef0807-1fa0-4cb3-b324-fef5a655ecfa
+PUBLICADO tipo=reserva.cancelada eventId=18480ead-7028-49b6-a2d3-618f25cbecb8 attemptId=132fa629-87f1-4c44-82c3-69ce43759f7d
+PUBLICADO tipo=reserva.cancelada eventId=d14d23b5-5373-4e52-8247-5c5b402757a6 attemptId=985d55d8-fa01-4bf8-a6e0-a9869fb856a0
+PUBLICADO tipo=reserva.cancelada eventId=c29565aa-67ed-46c6-a7a3-a095e454da20 attemptId=a116897f-d4b4-460f-b77f-aa6409164b70
+PUBLICADO tipo=reserva.cancelada eventId=ab41581c-fdd2-4df2-b7dd-0cd9712d6178 attemptId=e0b46967-f909-42e5-aa96-568b8f8d3250
+DESPACHO eventId=8fe42d81-6d0b-4306-895d-c2ee39854298 http=502 aviso=PENDING tentativasHttp=1 bloqueios=0 circuito=CLOSED providerCalls=1
+DESPACHO eventId=18480ead-7028-49b6-a2d3-618f25cbecb8 http=502 aviso=PENDING tentativasHttp=1 bloqueios=0 circuito=CLOSED providerCalls=2
+DESPACHO eventId=d14d23b5-5373-4e52-8247-5c5b402757a6 http=502 aviso=PENDING tentativasHttp=1 bloqueios=0 circuito=CLOSED providerCalls=3
+DESPACHO eventId=c29565aa-67ed-46c6-a7a3-a095e454da20 http=502 aviso=PENDING tentativasHttp=1 bloqueios=0 circuito=OPEN providerCalls=4
+PASS aberto state=OPEN failedCalls=4 providerCalls=4
+DESPACHO eventId=ab41581c-fdd2-4df2-b7dd-0cd9712d6178 http=503 aviso=PENDING tentativasHttp=0 bloqueios=1 circuito=OPEN providerCalls=4
+PASS bloqueada eventId=ab41581c-fdd2-4df2-b7dd-0cd9712d6178 providerCalls=4 tentativasHttp=0 bloqueios=1
+PUBLICADO tipo=reserva.confirmada eventId=d02b7be4-3e82-4361-831c-e1eee4067e59 attemptId=0f37ab84-32a0-4ed8-8b06-2f8112a793a2
+PASS fluxoDuranteOpen eventId=d02b7be4-3e82-4361-831c-e1eee4067e59 retirada=1 comunicacao=PENDING auditoria=1 preparacao=1 providerCalls=4
+PASS espera state=OPEN transicaoAutomatica=false
+DESPACHO eventId=8fe42d81-6d0b-4306-895d-c2ee39854298 http=200 aviso=SENT tentativasHttp=2 bloqueios=0 circuito=HALF_OPEN providerCalls=5
+PASS halfOpenPrimeira eventId=8fe42d81-6d0b-4306-895d-c2ee39854298 state=HALF_OPEN
+DESPACHO eventId=18480ead-7028-49b6-a2d3-618f25cbecb8 http=200 aviso=SENT tentativasHttp=2 bloqueios=0 circuito=CLOSED providerCalls=6
+PASS fechado eventId=18480ead-7028-49b6-a2d3-618f25cbecb8 state=CLOSED
+DESPACHO eventId=d14d23b5-5373-4e52-8247-5c5b402757a6 http=200 aviso=SENT tentativasHttp=2 bloqueios=0 circuito=CLOSED providerCalls=7
+DESPACHO eventId=c29565aa-67ed-46c6-a7a3-a095e454da20 http=200 aviso=SENT tentativasHttp=2 bloqueios=0 circuito=CLOSED providerCalls=8
+DESPACHO eventId=ab41581c-fdd2-4df2-b7dd-0cd9712d6178 http=200 aviso=SENT tentativasHttp=1 bloqueios=1 circuito=CLOSED providerCalls=9
+DESPACHO eventId=d02b7be4-3e82-4361-831c-e1eee4067e59 http=200 aviso=SENT tentativasHttp=1 bloqueios=0 circuito=CLOSED providerCalls=10
+PASS final state=CLOSED transitions=CLOSED->OPEN,OPEN->HALF_OPEN,HALF_OPEN->CLOSED providerCalls=10 uniqueDelivered=6 estacionamento=1
+PASS E07 runId=deffdd7c-1a93-437c-bc60-59588b7bd054

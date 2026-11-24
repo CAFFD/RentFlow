@@ -1,0 +1,22 @@
+RUN fb2951e9-1f39-4ae6-9c85-b82bd75f280d UTC=2026-11-24T13:56:41.7677875Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+PASS JSON de reserva sem campos obrigatorios recebeu HTTP 400
+PREVISAO reserva.confirmada 1,1,0,1,1
+PUBLICADO tipo=reserva.confirmada eventId=621692a6-7a2e-4bf1-be40-3b90f288ed06 attemptId=9e77ecd4-d710-4ba2-ad8b-b9269ea12e69
+PASS matriz reserva.confirmada observado=1,1,0,1,1 auditoria=original confirm=ACK do broker, sem return
+PREVISAO reserva.cancelada 0,1,0,1,0
+PUBLICADO tipo=reserva.cancelada eventId=0bf2e3b8-024f-4e36-bd86-b2eecc6f3c7e attemptId=f17ab1e0-d7e6-46ab-bc10-63e6d8cb880e
+PASS matriz reserva.cancelada observado=0,1,0,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.aprovada 0,0,1,1,0
+PUBLICADO tipo=inspecao.aprovada eventId=bb468343-eb8b-4c88-b1bf-9188fc69f93f attemptId=7f574265-07c2-464d-85cb-545556982055
+PASS matriz inspecao.aprovada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.reprovada 0,1,1,1,0
+PUBLICADO tipo=inspecao.reprovada eventId=bd6d9980-1b65-410d-9f88-e901e05d5caf attemptId=d7c90ab0-37b8-4bbd-8f35-75258ea89b3a
+PASS matriz inspecao.reprovada observado=0,1,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.agendada 0,0,1,1,0
+PUBLICADO tipo=inspecao.agendada eventId=75b37f43-0d04-4f3c-83b8-933b53dd1e94 attemptId=e6bc0128-c2a7-451b-84e7-b727bdb8e903
+PASS matriz inspecao.agendada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO equipamento.cadastrado 0,0,0,1,0
+PUBLICADO tipo=equipamento.cadastrado eventId=3c1bb966-d69a-496f-92fb-83e49f02a6fa attemptId=4f3bbc51-d72c-4ec6-bc26-29ac49668bf3
+PASS matriz equipamento.cadastrado observado=0,0,0,1,0 auditoria=original confirm=ACK do broker, sem return
+PUBLICADO tipo=inspecao.reaberta eventId=40834adb-6411-4530-bac4-56d6da1611b4 attemptId=67aaedce-9c44-4877-862f-7e25a660f534
+PASS extensibilidade eventId=40834adb-6411-4530-bac4-56d6da1611b4 tipo=inspecao.reaberta observado=0,0,1,1,0 resultado=NULL

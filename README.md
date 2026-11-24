@@ -6,11 +6,12 @@ Laboratório acadêmico de mensageria do Tema 07. A defesa está prevista para 2
 
 | Caminho | Função |
 |---|---|
-| `pom.xml` | Agrega os sete módulos e define Java 21 e Spring Boot 3.5.16. |
+| `pom.xml` | Agrega os oito módulos e define Java 21, Spring Boot 3.5.16 e Resilience4j 2.4.0. |
 | `mvnw.cmd`, `mvnw`, `.mvn/wrapper/` | Executam a versão 3.9.9 do Maven selecionada pelo projeto. |
-| `shared/event-contracts/` | Módulo reservado ao contrato JSON da etapa seguinte. |
-| `producer/` | Ponto de entrada Java do futuro produtor. |
+| `shared/event-contracts/` | Contrato JSON compartilhado e validado. |
+| `producer/` | API produtora REST/AMQP e histórico de publicação. |
 | `consumers/` | Um módulo para cada responsabilidade: retirada, comunicacao, manutencao, auditoria e preparacao. |
+| `tools/mock-notification-provider/` | Provedor HTTP local, independente e sem dependências externas. |
 | `.env.example` | Modelo de credenciais locais usado pelo inicializador. O Compose publica o PostgreSQL na porta 15432 do Windows. |
 | `docs/`, `prompts/` | Requisitos, arquitetura, contratos, experimentos, evidências e instruções por etapa. |
 
@@ -98,3 +99,22 @@ O disparador também aceita reserva.cancelada, inspecao.aprovada, inspecao.repro
 Para encerrar, use `.\scripts\apps.ps1 parar todos` e depois `.\scripts\parar.ps1`. O primeiro verifica executável, JAR, PID e token antes de encerrar cada JVM. O segundo preserva os volumes do projeto. Os procedimentos antigos da Etapa 01 descrevem um laboratório sem consumidores; o núcleo acrescenta uma política de dead-lettering que também pode estacionar mensagens expiradas. Use o relatório histórico para estudar o EXP-01A.
 
 Consulte o [guia de leitura do código](docs/GUIA-DO-CODIGO.md), o [contrato e exemplos HTTP](docs/CONTRATOS.md) e os relatórios individuais das [Etapas 02](docs/evidencias/etapa-02.md), [03](docs/evidencias/etapa-03.md) e [04](docs/evidencias/etapa-04.md).
+
+## Demonstrar o Circuit Breaker
+
+A integração HTTP é opcional e permanece fora do listener RabbitMQ. O listener grava o aviso `PENDING`, confirma o commit e só então envia o ACK. O despacho ocorre depois, por uma operação explícita. Assim, uma indisponibilidade do provedor não bloqueia a mensageria.
+
+```powershell
+.\scripts\provedor.ps1 iniciar
+.\scripts\apps.ps1 parar comunicacao
+.\scripts\apps.ps1 iniciar comunicacao -Notificacoes
+.\scripts\e07.ps1
+.\scripts\provedor.ps1 estado
+Invoke-RestMethod http://127.0.0.1:8082/circuit-breaker
+```
+
+O circuito `notificationProvider` usa janela de quatro chamadas, mínimo de quatro, limiar de 50%, espera de 10 segundos e duas permissões em `HALF_OPEN`. A transição automática está desativada: após os 10 segundos, a próxima tentativa permitida promove `OPEN` para `HALF_OPEN`. O cliente limita conexão a 1 segundo e leitura a 2 segundos. Uma tentativa bloqueada não executa HTTP nem incrementa `tentativas_http`.
+
+O endpoint `POST /notifications/{eventId}/dispatch` reivindica atomicamente um aviso e evita despachos simultâneos. `GET /notifications/{eventId}` mostra seu estado; `GET /circuit-breaker` mostra estado, métricas e transições. O provedor em `127.0.0.1:8090` oferece os modos saudável e indisponível por meio de `scripts/provedor.ps1`. Ele deduplica pela chave `Idempotency-Key`, mas mantém esse estado apenas em memória.
+
+A [evidência da Etapa 05](docs/evidencias/etapa-05.md) registra o E07 e a regressão final. Para desabilitar a integração sem afetar o fluxo original, reinicie apenas a comunicação sem `-Notificacoes`.
