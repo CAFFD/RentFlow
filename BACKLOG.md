@@ -41,5 +41,5 @@ Etapa 00 concluída em 24/11/2026. P0 obrigatório. Prioridade do enunciado acim
 - [x] Núcleo preservado no commit `4abcead` e tag local `core-etapas-00-04`, sem segredos.
 - [x] Circuit Breaker isolado, migração incremental, E07 e regressão do núcleo aprovados.
 - [x] Guardar evidências de ensaio e atualizar diagrama, comandos e limitações do repositório.
-- [ ] Conferir e publicar o link do repositório remoto; nenhum remoto foi configurado automaticamente.
+- [x] Repositório remoto conferido e publicado em https://github.com/CAFFD/RentFlow, incluindo as tags estáveis.
 - [ ] Cinco integrantes, ensaio cronometrado de 20 min, contingência com evidências reais gravadas.

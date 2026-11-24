@@ -2,6 +2,8 @@
 
 Laboratório acadêmico de mensageria do Tema 07. A defesa está prevista para 25/11/2026, com cinco integrantes e até 20 minutos. O enunciado está em [Trabalho_07.docx](docs/enunciado/Trabalho_07.docx). O [relatório da Etapa 00](docs/evidencias/etapa-00.md) reúne diagnóstico, versões, resultados e correções.
 
+Repositório: https://github.com/CAFFD/RentFlow
+
 ## Estrutura
 
 | Caminho | Função |
