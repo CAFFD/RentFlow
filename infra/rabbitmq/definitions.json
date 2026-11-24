@@ -1,0 +1,123 @@
+{
+  "vhosts": [
+    {
+      "name": "rentflow"
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "rentflow.events",
+      "vhost": "rentflow",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "queues": [
+    {
+      "name": "retirada.queue",
+      "vhost": "rentflow",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "comunicacao.queue",
+      "vhost": "rentflow",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "manutencao.queue",
+      "vhost": "rentflow",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "auditoria.queue",
+      "vhost": "rentflow",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "preparacao.queue",
+      "vhost": "rentflow",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "retirada.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.confirmada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.confirmada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.cancelada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "inspecao.reprovada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "manutencao.queue",
+      "destination_type": "queue",
+      "routing_key": "inspecao.#",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "auditoria.queue",
+      "destination_type": "queue",
+      "routing_key": "#",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "preparacao.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.confirmada",
+      "arguments": {}
+    }
+  ]
+}

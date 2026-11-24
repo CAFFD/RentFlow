@@ -1,0 +1,67 @@
+RUN 2d25e89d-2c75-4acd-acb1-e48579033b55 UTC=2026-11-24T04:19:55.4880055Z ordem=retirada,comunicacao,manutencao,auditoria,preparacao
+PASS JSON de reserva sem campos obrigatorios recebeu HTTP 400
+PREVISAO reserva.confirmada 1,1,0,1,1
+PUBLICADO tipo=reserva.confirmada eventId=b1d658c3-a63d-4c2c-8a59-fd2f478220c7 attemptId=74f406b5-3862-4288-b6ce-16110adfba89
+PASS matriz reserva.confirmada observado=1,1,0,1,1 auditoria=original confirm=ACK do broker, sem return
+PREVISAO reserva.cancelada 0,1,0,1,0
+PUBLICADO tipo=reserva.cancelada eventId=60f4c79a-af79-449d-b11e-cebef3c66b18 attemptId=0442acd7-2d08-49a9-9059-db7f25153022
+PASS matriz reserva.cancelada observado=0,1,0,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.aprovada 0,0,1,1,0
+PUBLICADO tipo=inspecao.aprovada eventId=ffbd7d43-9d68-435d-a3c7-44c27dce826f attemptId=a7693d8a-9ea1-4c0f-98b5-879439d753e9
+PASS matriz inspecao.aprovada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.reprovada 0,1,1,1,0
+PUBLICADO tipo=inspecao.reprovada eventId=d4830747-62f2-4a28-8cef-5939f19593fc attemptId=0be8becd-40a0-4903-ad10-457b29a86c04
+PASS matriz inspecao.reprovada observado=0,1,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO inspecao.agendada 0,0,1,1,0
+PUBLICADO tipo=inspecao.agendada eventId=8502784d-9c40-458f-ae72-5273b3c9046a attemptId=5880b216-c2ce-4959-b712-96c51d2e113f
+PASS matriz inspecao.agendada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PREVISAO equipamento.cadastrado 0,0,0,1,0
+PUBLICADO tipo=equipamento.cadastrado eventId=426616c1-c21e-4c68-b74a-22883658cc75 attemptId=96b8bfc5-d5fc-48c2-a927-52c42dc0df90
+PASS matriz equipamento.cadastrado observado=0,0,0,1,0 auditoria=original confirm=ACK do broker, sem return
+PUBLICADO tipo=inspecao.reaberta eventId=e3465144-7976-4775-8432-a43f157f9ab7 attemptId=3dd7d3ff-7aaa-4055-9874-7f0cc7377b09
+PASS extensibilidade eventId=e3465144-7976-4775-8432-a43f157f9ab7 tipo=inspecao.reaberta observado=0,0,1,1,0 resultado=NULL
+PUBLICADO tipo=reserva.confirmada eventId=1a5069b1-8edc-4227-a55a-55383560914c attemptId=638d854d-6772-464e-9800-4ec21591569f
+PUBLICADO tipo=reserva.confirmada eventId=30c2368b-dea1-4fa0-b069-591344a747ea attemptId=6b5c2101-1d5f-48f3-8d4d-cb04fd95df7c
+PUBLICADO tipo=reserva.confirmada eventId=18426395-9a95-4ed7-859b-213fcb0cf3f1 attemptId=b7715c53-10f7-4570-90ca-3463b2b1732a
+PUBLICADO tipo=reserva.confirmada eventId=0a015623-98a8-4894-b7c2-4fdf5e349b1e attemptId=a9f8cfae-8f5a-424f-a7d8-1f599035d592
+PUBLICADO tipo=reserva.confirmada eventId=23d42f21-6a24-4a99-8e83-75c6a56e8547 attemptId=234e9888-b1fd-400b-9883-2c3e73c0b949
+PUBLICADO tipo=reserva.confirmada eventId=ccdeb446-e560-4bbc-88b3-a21e4b498808 attemptId=9889085d-2691-4679-80ef-95e10290c080
+PUBLICADO tipo=reserva.confirmada eventId=e627ffe0-4cd2-480a-b551-5e96e1c6e539 attemptId=ca897940-17c1-403f-8275-f7d38c8cb4e7
+PUBLICADO tipo=reserva.confirmada eventId=0161db58-580a-40e9-95f1-46b02ad11c6c attemptId=e2cfdd42-31b3-4864-8c41-5f96bcac214b
+PUBLICADO tipo=reserva.confirmada eventId=90235f06-a939-4077-ade0-ef65015828cf attemptId=b1831b1a-89b6-44fa-a1b6-c51527618604
+PUBLICADO tipo=reserva.confirmada eventId=1cc9ec65-4161-4f87-b6e5-b7c96eb300b7 attemptId=bfb98186-eeb8-4f60-970e-cbfe9d678672
+Worker-B tarefas=4 ids=1a5069b1-8edc-4227-a55a-55383560914c,23d42f21-6a24-4a99-8e83-75c6a56e8547,e627ffe0-4cd2-480a-b551-5e96e1c6e539,90235f06-a939-4077-ade0-ef65015828cf
+Worker-A tarefas=6 ids=30c2368b-dea1-4fa0-b069-591344a747ea,18426395-9a95-4ed7-859b-213fcb0cf3f1,0a015623-98a8-4894-b7c2-4fdf5e349b1e,ccdeb446-e560-4bbc-88b3-a21e4b498808,0161db58-580a-40e9-95f1-46b02ad11c6c,1cc9ec65-4161-4f87-b6e5-b7c96eb300b7
+PASS concorrencia ids=10 retirada=10 comunicacao=10 auditoria=10 preparacao=10
+ANTES consumers=1 ready=0
+PUBLICADO tipo=reserva.confirmada eventId=c76401b3-ce0a-4534-9b20-570188f5a3de attemptId=48880489-4c8d-4969-8ea7-afc94842c645
+DURANTE eventId=c76401b3-ce0a-4534-9b20-570188f5a3de consumers=0 ready=1 avisosSQL=0 retirada=1 auditoria=1 preparacao=1
+PASS DEPOIS eventId=c76401b3-ce0a-4534-9b20-570188f5a3de consumers=1 ready=0 unacked=0 avisos=1
+PUBLICADO tipo=reserva.confirmada eventId=aa730321-88eb-4996-bd8b-bb577254fd4d attemptId=c17a6ccc-24fe-4029-bc39-02dce7a3c109
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=ACK_COMMIT
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=ACK_DUPLICATA
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_COMMIT
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_DUPLICATA
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=ACK_COMMIT
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=ACK_DUPLICATA
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-A outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-A outcome=ACK_COMMIT
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-B outcome=RECEBIDO redelivered=false
+LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-B outcome=ACK_DUPLICATA
+PASS duplicidade eventId=aa730321-88eb-4996-bd8b-bb577254fd4d tentativas=c17a6ccc-24fe-4029-bc39-02dce7a3c109,0802a31b-02e8-4c94-a0fe-2bce0bba2d25 SQL=1,1,0,1,1 autorizacoesPorReserva=1 ACK_DUPLICATA=4 original=identico
+PUBLICADO tipo=reserva.confirmada eventId=67bcc2ae-16fc-471e-b89f-e6de9f2ac9eb attemptId=81283c56-adde-4036-9c9b-0c3dc71ca3ba
+LOG eventId=73d96ba5-df3c-4623-a1a7-847e0c6a571a eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=73d96ba5-df3c-4623-a1a7-847e0c6a571a eventType=reserva.confirmada consumerId=retirada outcome=PERMANENTE erro=DuplicateKeyException
+PASS conflito antesCommit original=67bcc2ae-16fc-471e-b89f-e6de9f2ac9eb novo=73d96ba5-df3c-4623-a1a7-847e0c6a571a retiradaNova=0 marcaNovaSQL=0 retiradaOriginal=1 estacionamentoDelta=1
+PUBLICADO tipo=reserva.confirmada eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 attemptId=a8265c06-d5a7-4235-bd11-23e50ebebb5f
+LOG eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=false
+LOG eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 eventType=reserva.confirmada consumerId=retirada outcome=FALHA_SIMULADA_APOS_COMMIT
+LOG eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 eventType=reserva.confirmada consumerId=retirada outcome=RECEBIDO redelivered=true
+LOG eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 eventType=reserva.confirmada consumerId=retirada outcome=ACK_DUPLICATA
+PASS falha eventId=473a8ead-ca03-4ed3-8b8b-93d9a812db68 commit=1 canalAbortadoAntesDoAck=1 redelivered=true ACK_DUPLICATA autorizacoes=1
