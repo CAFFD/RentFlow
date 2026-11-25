@@ -1,0 +1,21 @@
+    @RabbitListener(queues="${rentflow.queue}")
+    public void receber(Message mensagem, Channel canal) throws IOException, InterruptedException {
+        var props = mensagem.getMessageProperties();
+        long tag = props.getDeliveryTag();
+        String original = new String(mensagem.getBody(), StandardCharsets.UTF_8);
+        String tipo = props.getReceivedRoutingKey();
+        String id = props.getMessageId();
+        for (int tentativa = 1; tentativa <= 3; tentativa++) {
+            try {
+                Evento evento = Evento.ler(mapper, original, tipo);
+                id = evento.eventId().toString();
+                log.info("eventId={} eventType={} consumerId={} outcome=RECEBIDO redelivered={}", id,tipo,worker,props.getRedelivered());
+                boolean novo = servico.aplicar(evento, original, worker);
+                if (novo && falhaAposCommit && evento.data().path("testeFalhaAposCommit").asBoolean(false)) {
+                    log.info("eventId={} eventType={} consumerId={} outcome=FALHA_SIMULADA_APOS_COMMIT",id,tipo,worker);
+                    canal.abort(); // Teste local: entrega ainda sem ACK volta ao broker.
+                    return;
+                }
+                canal.basicAck(tag,false);
+                log.info("eventId={} eventType={} consumerId={} outcome={}",id,tipo,worker,novo ? "ACK_COMMIT" : "ACK_DUPLICATA");
+                return;

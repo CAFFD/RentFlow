@@ -1,0 +1,15 @@
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.cancelada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "inspecao.reprovada",
+      "arguments": {}

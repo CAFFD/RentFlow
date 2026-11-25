@@ -1,0 +1,8 @@
+PASS vhost=rentflow exchange=rentflow.events topic durable; 5 filas classic duraveis, nao exclusivas, sem auto-delete
+queue auditoria.queue #
+queue comunicacao.queue inspecao.reprovada
+queue comunicacao.queue reserva.cancelada
+queue comunicacao.queue reserva.confirmada
+queue manutencao.queue inspecao.#
+queue preparacao.queue reserva.confirmada
+queue retirada.queue reserva.confirmada

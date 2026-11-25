@@ -1,0 +1,1 @@
+PASS duplicidade eventId=aa730321-88eb-4996-bd8b-bb577254fd4d tentativas=c17a6ccc-24fe-4029-bc39-02dce7a3c109,0802a31b-02e8-4c94-a0fe-2bce0bba2d25 SQL=1,1,0,1,1 autorizacoesPorReserva=1 ACK_DUPLICATA=4 original=identico

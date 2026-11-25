@@ -1,0 +1,14 @@
+    protected EfeitosRepository(JdbcTemplate banco, String schema) {
+        this.banco = banco; this.schema = schema; // Constante fornecida pelo modulo.
+    }
+
+    public boolean registrar(Evento e, String original) {
+        int novos = banco.update("INSERT INTO " + schema
+        + ".processed_events(event_id,tipo,ocorrido,envelope) VALUES (?,?,?,?::jsonb) ON CONFLICT(event_id) DO NOTHING",
+                e.eventId(), e.eventType(), Timestamp.from(e.occurredAt()), original);
+        if (novos == 1) return true;
+        Boolean igual = banco.queryForObject("SELECT envelope = ?::jsonb FROM " + schema
+        + ".processed_events WHERE event_id=?", Boolean.class, original,e.eventId());
+        if (!Boolean.TRUE.equals(igual)) throw new ColisaoDeEvento();
+        return false;
+    }

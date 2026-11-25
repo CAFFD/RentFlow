@@ -1,0 +1,12 @@
+    private Resultado enviar(UUID evento, String tipo, String json, UUID tentativa) throws Exception {
+        var correlacao = new CorrelationData(tentativa.toString());
+        var mensagem = MessageBuilder.withBody(json.getBytes(StandardCharsets.UTF_8))
+                .setContentType("application/json").setContentEncoding("UTF-8")
+                .setMessageId(evento.toString()).setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
+        rabbit.send("rentflow.events", tipo, mensagem, correlacao);
+        var confirm = correlacao.getFuture().get(5, TimeUnit.SECONDS);
+        if (correlacao.getReturned() != null)
+            return new Resultado("FALHA", "RETURN " + correlacao.getReturned().getReplyCode());
+        if (confirm.isAck()) return new Resultado("PUBLICADO", "ACK do broker, sem return");
+        if (confirm.getReason() == null) return new Resultado("FALHA", "NACK do broker");
+        return new Resultado("INDETERMINADO", "Canal fechado sem confirm do broker");

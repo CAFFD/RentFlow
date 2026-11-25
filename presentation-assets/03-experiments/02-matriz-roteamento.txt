@@ -1,0 +1,6 @@
+PASS matriz reserva.confirmada observado=1,1,0,1,1 auditoria=original confirm=ACK do broker, sem return
+PASS matriz reserva.cancelada observado=0,1,0,1,0 auditoria=original confirm=ACK do broker, sem return
+PASS matriz inspecao.aprovada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PASS matriz inspecao.reprovada observado=0,1,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PASS matriz inspecao.agendada observado=0,0,1,1,0 auditoria=original confirm=ACK do broker, sem return
+PASS matriz equipamento.cadastrado observado=0,0,0,1,0 auditoria=original confirm=ACK do broker, sem return

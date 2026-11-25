@@ -4,6 +4,7 @@
 !.env.example
 .idea/
 *.iml
-.vscode/
+.vscode/*
+!.vscode/settings.json
 
 .runtime/

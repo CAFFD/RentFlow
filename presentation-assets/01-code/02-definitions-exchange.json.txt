@@ -1,0 +1,10 @@
+  "exchanges": [
+    {
+      "name": "rentflow.events",
+      "vhost": "rentflow",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }

@@ -1,0 +1,16 @@
+  "bindings": [
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "retirada.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.confirmada",
+      "arguments": {}
+    },
+    {
+      "source": "rentflow.events",
+      "vhost": "rentflow",
+      "destination": "comunicacao.queue",
+      "destination_type": "queue",
+      "routing_key": "reserva.confirmada",
+      "arguments": {}

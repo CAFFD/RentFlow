@@ -1,0 +1,29 @@
+===============================================================================
+ RENTFLOW | DEMONSTRACAO REAL DE IDEMPOTENCIA
+ Um eventId, duas publicacoes, uma unica autorizacao
+===============================================================================
+
+[1] PRIMEIRA PUBLICACAO AMQP
+    eventId   = 651eea44-e58c-4dd3-9219-725bfa934e76
+    attemptId = 8ce34ce0-2a57-4bc3-a566-b783f74b7ca8
+    estado    = PUBLICADO
+
+[2] POSTGRESQL APOS O PRIMEIRO PROCESSAMENTO
+    SQL> SELECT count(*) FROM retirada.efeitos WHERE event_id='651eea44-e58c-4dd3-9219-725bfa934e76';
+    autorizacoes = 1
+    reserva_id    = RES-1f0dd39f-1f56-4ced-9aaf-bd13fba4dbc7
+
+[3] REPUBLICACAO DO MESMO ENVELOPE
+    eventId   = 651eea44-e58c-4dd3-9219-725bfa934e76  (MESMO ID)
+    attemptId = 1c1be939-f798-4e35-b008-62afa47de447  (NOVA TENTATIVA)
+    estado    = PUBLICADO
+
+[4] CONSUMIDOR RETIRADA
+    eventId=651eea44-e58c-4dd3-9219-725bfa934e76 eventType=reserva.confirmada consumerId=retirada outcome=ACK_DUPLICATA
+
+[5] POSTGRESQL APOS O REPLAY
+    SQL> SELECT count(*) FROM retirada.efeitos WHERE event_id='651eea44-e58c-4dd3-9219-725bfa934e76';
+    autorizacoes = 1
+
+ PASS | DUAS PUBLICACOES, ACK_DUPLICATA E UMA AUTORIZACAO
+===============================================================================

@@ -1,0 +1,4 @@
++PUBLICADO tipo=reserva.confirmada eventId=b1d658c3-a63d-4c2c-8a59-fd2f478220c7 attemptId=74f406b5-3862-4288-b6ce-16110adfba89
+PUBLICADO tipo=reserva.cancelada eventId=60f4c79a-af79-449d-b11e-cebef3c66b18 attemptId=0442acd7-2d08-49a9-9059-db7f25153022
+PUBLICADO tipo=inspecao.aprovada eventId=ffbd7d43-9d68-435d-a3c7-44c27dce826f attemptId=a7693d8a-9ea1-4c0f-98b5-879439d753e9
+PUBLICADO tipo=inspecao.reprovada eventId=d4830747-62f2-4a28-8cef-5939f19593fc attemptId=0be8becd-40a0-4903-ad10-457b29a86c04
