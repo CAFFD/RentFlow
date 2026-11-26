@@ -4,7 +4,12 @@
 !.env.example
 .idea/
 *.iml
-.vscode/*
-!.vscode/settings.json
+.vscode/
+
+# Materiais locais de desenvolvimento e apresentação
+AGENTS.md
+BACKLOG.md
+prompts/
+presentation-assets/
 
 .runtime/

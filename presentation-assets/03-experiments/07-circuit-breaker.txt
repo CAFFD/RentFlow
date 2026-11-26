@@ -1,7 +1,0 @@
-PASS normal eventId=42cb2f11-b704-419e-9b7f-11e7ed6e5bf5 circuito=CLOSED providerCalls=1 estado=SENT
-PASS aberto state=OPEN failedCalls=4 providerCalls=4
-PASS bloqueada eventId=ab41581c-fdd2-4df2-b7dd-0cd9712d6178 providerCalls=4 tentativasHttp=0 bloqueios=1
-PASS fluxoDuranteOpen eventId=d02b7be4-3e82-4361-831c-e1eee4067e59 retirada=1 comunicacao=PENDING auditoria=1 preparacao=1 providerCalls=4
-PASS halfOpenPrimeira eventId=8fe42d81-6d0b-4306-895d-c2ee39854298 state=HALF_OPEN
-PASS fechado eventId=18480ead-7028-49b6-a2d3-618f25cbecb8 state=CLOSED
-PASS final state=CLOSED transitions=CLOSED->OPEN,OPEN->HALF_OPEN,HALF_OPEN->CLOSED providerCalls=10 uniqueDelivered=6 estacionamento=1

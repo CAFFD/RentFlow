@@ -1,10 +1,14 @@
 # RENTFLOW
 
-Projeto acadêmico do **Tema 07 — Locadora de Equipamentos**, desenvolvido para a disciplina de **Sistemas Distribuídos e Cloud Computing**. O RENTFLOW demonstra uma arquitetura orientada a eventos na qual um produtor publica fatos no RabbitMQ e cinco responsabilidades independentes persistem seus próprios efeitos no PostgreSQL.
+Sistema acadêmico de locação de equipamentos baseado em arquitetura orientada a eventos. Uma aplicação produtora publica fatos no RabbitMQ e cinco responsabilidades independentes persistem seus efeitos no PostgreSQL.
 
-## Equipe
+**Disciplina:** Sistemas Distribuídos e Cloud Computing
 
-**CodeForge**
+**Tema 07:** Locadora de Equipamentos
+
+**Equipe:** CodeForge
+
+## Integrantes
 
 - Gabriel Guarsoni Dadário
 - Bruno Cavalcante Nunes
@@ -18,109 +22,88 @@ Projeto acadêmico do **Tema 07 — Locadora de Equipamentos**, desenvolvido par
 - Spring Web, Spring AMQP, Spring JDBC e Actuator
 - RabbitMQ 4.4.0 com AMQP 0-9-1 e Management Plugin
 - PostgreSQL 16.11
-- Resilience4j 2.4.0 no diferencial de notificações HTTP
-- Maven Wrapper 3.9.9, Docker Engine e Docker Compose
+- Resilience4j 2.4.0
+- Maven Wrapper 3.9.9
+- Docker Engine e Docker Compose
 
 ## Pré-requisitos
 
 - Windows com PowerShell
-- Eclipse Temurin JDK 21 com `JAVA_HOME` configurado
-- Docker Desktop com Docker Engine e Compose disponíveis
-- Portas locais livres: `5672`, `15672`, `15432` e `8080` a `8090`
+- Eclipse Temurin JDK 21 e `JAVA_HOME` configurado
+- Docker Desktop em execução
+- Portas livres: `5672`, `15672`, `15432` e `8080` a `8090`
 
-O enunciado original está em [Trabalho_07.docx](docs/enunciado/Trabalho_07.docx). A [arquitetura](docs/ARQUITETURA.md), os [contratos](docs/CONTRATOS.md), os [experimentos](docs/EXPERIMENTOS.md) e o [guia do código](docs/GUIA-DO-CODIGO.md) complementam este README.
-
-Repositório: https://github.com/CAFFD/RentFlow
-
-## Estrutura
-
-| Caminho | Função |
-|---|---|
-| `pom.xml` | Agrega os oito módulos e define Java 21, Spring Boot 3.5.16 e Resilience4j 2.4.0. |
-| `mvnw.cmd`, `mvnw`, `.mvn/wrapper/` | Executam a versão 3.9.9 do Maven selecionada pelo projeto. |
-| `shared/event-contracts/` | Contrato JSON compartilhado e validado. |
-| `producer/` | API produtora REST/AMQP e histórico de publicação. |
-| `consumers/` | Um módulo para cada responsabilidade: retirada, comunicacao, manutencao, auditoria e preparacao. |
-| `tools/mock-notification-provider/` | Provedor HTTP local, independente e sem dependências externas. |
-| `.env.example` | Modelo de credenciais locais usado pelo inicializador. O Compose publica o PostgreSQL na porta 15432 do Windows. |
-| `docs/`, `prompts/` | Requisitos, arquitetura, contratos, experimentos, evidências e instruções por etapa. |
-
-## Verificar a fundação no PowerShell
-
-Com o JDK 21 disponível, abra o PowerShell na raiz do projeto. O primeiro uso do Wrapper requer rede para obter o Maven e as dependências. O Docker pode ser verificado separadamente.
+Verifique o ambiente na raiz do projeto:
 
 ```powershell
 java -version
-javac -version
 .\mvnw.cmd --version
-.\mvnw.cmd verify
 docker version
 docker compose version
 ```
 
-O Maven lê o POM agregador e constrói os nove projetos do reactor em uma execução. Cada aplicação possui seu próprio método `main` e JAR executável. O mesmo JAR de preparação é iniciado como `Worker-A` e `Worker-B`; ambos consomem a mesma fila e compartilham a constraint que impede tarefas duplicadas.
+## Configuração local
 
-Consulte o [backlog](BACKLOG.md) antes de iniciar qualquer etapa. Os testes de roteamento, concorrência, interrupção e duplicidade têm seus protocolos em [Experimentos](docs/EXPERIMENTOS.md).
+`.env.example` contém somente valores fictícios. Na primeira execução, o inicializador cria `.env` com senhas aleatórias. `.env`, `.runtime/`, logs e artefatos Maven não são versionados.
 
-## Resultado da Etapa 00
+Os serviços são publicados somente em `127.0.0.1`:
 
-Em 24/11/2026, o Wrapper executou Maven 3.9.9 com Eclipse Temurin 21.0.13.1+2. O build com Spring Boot 3.5.16 terminou com `BUILD SUCCESS` para o agregador e os sete módulos. O Docker Engine Linux respondeu com a versão 28.3.0 e o Compose com v2.38.2-desktop.1. O PostgreSQL do laboratório usará a porta 15432 no Windows, livre na conferência após o início do Docker.
+| Serviço | Porta |
+|---|---:|
+| RabbitMQ AMQP | 5672 |
+| RabbitMQ Management | 15672 |
+| PostgreSQL | 15432 |
+| Producer | 8080 |
+| Retirada | 8081 |
+| Comunicação | 8082 |
+| Manutenção | 8083 |
+| Auditoria | 8084 |
+| Preparação Worker-A | 8085 |
+| Preparação Worker-B | 8086 |
+| Provedor HTTP opcional | 8090 |
 
-Se o terminal da IDE já estava aberto quando o JDK foi instalado, reabra a IDE para carregar o JAVA_HOME e o PATH persistidos. A primeira tentativa de instalação falhou por espaço insuficiente em C:. O relatório contém o diagnóstico, a repetição bem-sucedida e as saídas do build.
+## Instalação e execução
 
-## Executar a infraestrutura da Etapa 01 no Windows
-
-A partir da raiz do projeto, com Docker Desktop em execução, use os comandos abaixo. Em uma máquina nova, confira primeiro o espaço livre no volume do Docker Desktop, `docker system df`, os recursos existentes (`docker ps -a`, `docker network ls`, `docker volume ls`) e as portas 5672, 15672 e 15432. Na primeira execução, o Compose pode precisar baixar as imagens. Use o nome de projeto `rentflow` exclusivamente para este laboratório.
-
-| Comando PowerShell | Resultado |
-|---|---|
-| `.\scripts\iniciar.ps1` | Cria o .env com senhas locais se ausente, sobe os dois serviços, espera saúde, importa e verifica a topologia. Aguarde a conclusão antes de publicar. |
-| `.\scripts\estado.ps1` | Mostra saúde e portas, testa o painel e executa SELECT 1. |
-| `.\scripts\topologia.ps1` | Compara o broker real com as definições. Imprime os sete bindings. |
-| `.\scripts\roteamento.ps1` | Executa EXP-01A nas cinco filas vazias e sem consumidores. Use o laboratório sem outro publicador durante o teste. |
-| `.\scripts\parar.ps1` | Para exclusivamente os dois serviços do projeto e preserva os volumes. Para retomar, execute iniciar.ps1. |
-
-O painel fica em http://127.0.0.1:15672/ e usa o usuário e a senha RabbitMQ do arquivo local `.env`. O Compose fixa os endereços em loopback. O PostgreSQL responde em 127.0.0.1:15432 no Windows e em postgres:5432 na rede do projeto. Para conferir a configuração sem exibir os valores das variáveis, execute `docker compose config --quiet`. Uma falha nos scripts interrompe a execução com erro.
-
-### Variáveis de ambiente
-
-O arquivo versionado `.env.example` contém somente valores fictícios de laboratório e as portas locais. Na primeira execução, `scripts/iniciar.ps1` cria o arquivo privado `.env` e substitui as duas senhas por valores aleatórios. Não copie credenciais reais para `.env.example` e não versione `.env` nem `.runtime/`.
-
-As definições principais ficam em `infra/rabbitmq/definitions.json`, sem usuários, senhas ou hashes. `iniciar.ps1` importa esse arquivo de modo idempotente com `rabbitmqctl import_definitions`. Depois, `preparar-nucleo.ps1` importa `infra/rabbitmq/estacionamento.json`, que acrescenta somente a DLX, a fila de estacionamento e a política de falhas. Em uma instância limpa, execute os dois scripts nesta ordem.
-
-**Limpeza das mensagens de teste.** Cada publicação do EXP-01A recebe um identificador de execução e prazo de uma hora. Mantenha o broker disponível, aguarde uma hora após a última publicação e confira no painel que Ready e Unacked são zero nas cinco filas antes de repetir. O prazo vale exclusivamente para essas mensagens. Se houver dados de outra origem, preserve-os e use uma instância de laboratório separada para uma nova execução. Evite publicar durante a verificação. A [evidência de 24/11](docs/evidencias/exp-01a.txt) conserva o resultado após a expiração.
-
-Consulte o [relatório da Etapa 01](docs/evidencias/etapa-01.md) para a matriz medida, as versões por digest e os limites do experimento.
-
-## Executar o núcleo Java no Windows
-
-Use o PowerShell na raiz. O Compose mantém o RabbitMQ e o PostgreSQL; os sete processos Java usam os seis JARs locais. Para a primeira partida, confira espaço no disco com `Get-PSDrive C` e portas de 8080 a 8086. Cada início confere a porta correspondente. O script de preflight pressupõe os consumidores desligados e Ready/Unacked em zero nas cinco filas.
+### 1. Infraestrutura e definições RabbitMQ
 
 ```powershell
 .\scripts\iniciar.ps1
-.\scripts\filas.ps1
-.\scripts\preflight.ps1
-.\mvnw.cmd --batch-mode --no-transfer-progress verify
-.\scripts\preparar-nucleo.ps1
-.\scripts\apps.ps1 iniciar todos
-.\scripts\apps.ps1 estado
-.\scripts\demonstrar.ps1 completo
 ```
 
-O preparador aplica `infra/sql/V*.sql` em ordem, dentro de transações. Registra versão e SHA256 no próprio banco, inclusive em volumes existentes. Para alterar o modelo, adicione a próxima migração e reaplique o preparador. Um arquivo já aplicado com outro hash interrompe a execução. Os logins das aplicações só recebem acesso ao próprio schema. O arquivo local `.runtime/banco.json` contém suas credenciais; preserve-o junto ao ambiente privado. A recriação desse arquivo com um banco já provisionado requer reconciliação das credenciais pelo administrador. Mantenha .runtime e .env fora do Git.
+O script cria `.env` quando necessário, inicia RabbitMQ e PostgreSQL, espera os healthchecks e importa `infra/rabbitmq/definitions.json`. Essa definição contém o vhost `rentflow`, a exchange `rentflow.events`, cinco filas e sete bindings, sem credenciais.
 
-| Instância | Porta padrão | Operação |
-|---|---:|---|
-| producer | 8080 | POST /events/{tipo}, GET /events/{id}, POST /events/{id}/replay |
-| retirada | 8081 | GET /effects |
-| comunicacao | 8082 | GET /effects |
-| manutencao | 8083 | GET /effects |
-| auditoria | 8084 | GET /effects |
-| Worker-A e Worker-B | 8085 e 8086 | GET /effects, mesma fila e mesmo banco de preparação |
+Valide a infraestrutura:
 
-### Publicar os quatro eventos obrigatórios
+```powershell
+.\scripts\estado.ps1
+.\scripts\topologia.ps1
+```
 
-Com todas as aplicações saudáveis:
+Painel RabbitMQ: http://127.0.0.1:15672. Use as credenciais do arquivo local `.env`.
+
+### 2. Build, migrations e política de falhas
+
+Com as aplicações Java paradas:
+
+```powershell
+.\mvnw.cmd --batch-mode --no-transfer-progress verify
+.\scripts\preparar-nucleo.ps1
+```
+
+`preparar-nucleo.ps1` aplica as migrations `infra/sql/V*.sql`, cria acessos isolados por schema e importa `infra/rabbitmq/estacionamento.json`. Essa segunda definição acrescenta a Dead Letter Exchange, a fila de estacionamento e a política das filas principais. Os scripts são idempotentes e preservam os volumes existentes.
+
+### 3. Producer e consumidores
+
+```powershell
+.\scripts\apps.ps1 iniciar todos
+.\scripts\apps.ps1 estado
+```
+
+O comando inicia producer, retirada, comunicação, manutenção, auditoria e duas instâncias do mesmo JAR de preparação. Worker-A e Worker-B consomem `preparacao.queue`; não existem filas individuais por worker.
+
+Cada aplicação disponibiliza `/actuator/health` em sua porta. Os logs e PIDs ficam em `.runtime/`.
+
+## Publicar os quatro eventos obrigatórios
 
 ```powershell
 $confirmada = .\scripts\disparar.ps1 -Tipo reserva.confirmada
@@ -129,54 +112,69 @@ $aprovada   = .\scripts\disparar.ps1 -Tipo inspecao.aprovada
 $reprovada  = .\scripts\disparar.ps1 -Tipo inspecao.reprovada
 ```
 
-Cada resultado contém `eventId`, `attemptId`, estado e motivo da confirmação. Para consultar os efeitos de uma publicação:
+Cada resposta contém `eventId`, `attemptId`, estado e resultado do publisher confirm.
+
+Consulte uma publicação e seus efeitos:
 
 ```powershell
-.\scripts\efeitos.ps1 -EventId $confirmada.eventId
-Invoke-RestMethod "http://127.0.0.1:8084/effects?eventId=$($confirmada.eventId)"
+$id = $confirmada.eventId
+Invoke-RestMethod "http://127.0.0.1:8080/events/$id" | ConvertTo-Json -Depth 10
+.\scripts\efeitos.ps1 -EventId $id | Format-List
+Invoke-RestMethod "http://127.0.0.1:8084/effects?eventId=$id" | ConvertTo-Json -Depth 10
 ```
 
-Cada processo oferece GET /actuator/health em 127.0.0.1. Para iniciar um único JAR em outra porta, use, por exemplo, `.\scripts\apps.ps1 iniciar Worker-B -Porta 8186` com a instância parada. A demonstração automatizada usa as portas padrão. Identidade do processo, token, porta e caminho de log ficam em .runtime. Cada partida cria arquivos de stdout e stderr individuais.
+## Testes reproduzíveis
+
+O cenário completo cria UUIDs próprios e não trunca tabelas nem purga filas:
 
 ```powershell
-$publicacao = .\scripts\disparar.ps1 -Tipo reserva.confirmada
-$id = $publicacao.eventId
-Invoke-RestMethod "http://127.0.0.1:8080/events/$id"
-.\scripts\efeitos.ps1 -EventId $id
-Invoke-RestMethod -Method Post "http://127.0.0.1:8080/events/$id/replay"
-.\scripts\apps.ps1 parar comunicacao
-.\scripts\apps.ps1 iniciar comunicacao
+.\scripts\demonstrar.ps1 completo
 ```
 
-O disparador também aceita reserva.cancelada, inspecao.aprovada, inspecao.reprovada, inspecao.agendada e equipamento.cadastrado. Execute cenários individuais com `.\scripts\demonstrar.ps1 matriz`, `concorrencia`, `interrupcao`, `duplicidade`, `conflito` ou `falha`. Cada execução cria novos IDs e registra sua transcrição em docs/evidencias/exp-nucleo-<runId>.txt. O cenário conflito deixa uma entrega intencional na fila de estacionamento para inspeção. As contagens da demonstração são filtradas pelos novos IDs.
+Também é possível executar separadamente:
 
-Para encerrar, use `.\scripts\apps.ps1 parar todos` e depois `.\scripts\parar.ps1`. O primeiro verifica executável, JAR, PID e token antes de encerrar cada JVM. O segundo preserva os volumes do projeto. Os procedimentos antigos da Etapa 01 descrevem um laboratório sem consumidores; o núcleo acrescenta uma política de dead-lettering que também pode estacionar mensagens expiradas. Use o relatório histórico para estudar o EXP-01A.
+```powershell
+.\scripts\demonstrar.ps1 matriz
+.\scripts\demonstrar.ps1 concorrencia
+.\scripts\demonstrar.ps1 interrupcao
+.\scripts\demonstrar.ps1 duplicidade
+.\scripts\demonstrar.ps1 falha
+```
 
-Consulte o [guia de leitura do código](docs/GUIA-DO-CODIGO.md), o [contrato e exemplos HTTP](docs/CONTRATOS.md) e os relatórios individuais das [Etapas 02](docs/evidencias/etapa-02.md), [03](docs/evidencias/etapa-03.md) e [04](docs/evidencias/etapa-04.md).
-
-## Demonstrar o Circuit Breaker
-
-A integração HTTP é opcional e permanece fora do listener RabbitMQ. O listener grava o aviso `PENDING`, confirma o commit e só então envia o ACK. O despacho ocorre depois, por uma operação explícita. Assim, uma indisponibilidade do provedor não bloqueia a mensageria.
+O Circuit Breaker é um diferencial opcional e não participa do ACK RabbitMQ:
 
 ```powershell
 .\scripts\provedor.ps1 iniciar
 .\scripts\apps.ps1 parar comunicacao
 .\scripts\apps.ps1 iniciar comunicacao -Notificacoes
 .\scripts\e07.ps1
-.\scripts\provedor.ps1 estado
-Invoke-RestMethod http://127.0.0.1:8082/circuit-breaker
+Invoke-RestMethod http://127.0.0.1:8082/circuit-breaker | ConvertTo-Json -Depth 10
 ```
 
-O circuito `notificationProvider` usa janela de quatro chamadas, mínimo de quatro, limiar de 50%, espera de 10 segundos e duas permissões em `HALF_OPEN`. A transição automática está desativada: após os 10 segundos, a próxima tentativa permitida promove `OPEN` para `HALF_OPEN`. O cliente limita conexão a 1 segundo e leitura a 2 segundos. Uma tentativa bloqueada não executa HTTP nem incrementa `tentativas_http`.
+Os procedimentos, resultados esperados e evidências selecionadas estão em [Experimentos](docs/EXPERIMENTOS.md).
 
-O endpoint `POST /notifications/{eventId}/dispatch` reivindica atomicamente um aviso e evita despachos simultâneos. `GET /notifications/{eventId}` mostra seu estado; `GET /circuit-breaker` mostra estado, métricas e transições. O provedor em `127.0.0.1:8090` oferece os modos saudável e indisponível por meio de `scripts/provedor.ps1`. Ele deduplica pela chave `Idempotency-Key`, mas mantém esse estado apenas em memória.
+## Encerramento
 
-A [evidência da Etapa 05](docs/evidencias/etapa-05.md) registra o E07 e a regressão final. Para desabilitar a integração sem afetar o fluxo original, reinicie apenas a comunicação sem `-Notificacoes`.
+```powershell
+.\scripts\apps.ps1 parar todos
+.\scripts\provedor.ps1 parar
+.\scripts\parar.ps1
+```
+
+Esses comandos param somente os processos e containers do RENTFLOW e preservam os volumes.
+
+## Documentação
+
+- [Arquitetura, roteamento e confiabilidade](docs/ARQUITETURA.md)
+- [Contratos de eventos e endpoints](docs/CONTRATOS.md)
+- [Roteiro dos experimentos](docs/EXPERIMENTOS.md)
+- [Evidências selecionadas](docs/evidencias/README.md)
+- [Enunciado original](docs/enunciado/Trabalho_07.docx)
 
 ## Limitações
 
-- RabbitMQ e PostgreSQL executam em nó único; o projeto não demonstra alta disponibilidade da infraestrutura.
-- A gravação do fato no PostgreSQL e a publicação AMQP não formam uma transação atômica. O replay explícito trata a recuperação do laboratório; uma evolução seria Transactional Outbox.
-- O processamento é *at-least-once*. Constraints e idempotência evitam repetir efeitos conhecidos, mas não constituem entrega exatamente uma vez.
-- O provedor HTTP simulado deduplica apenas em memória. Existe uma janela entre o sucesso externo e a atualização local.
-- A interface do projeto é REST e scripts PowerShell; não há frontend, autenticação, cloud ou Kubernetes.
+- RabbitMQ e PostgreSQL executam em nó único; não há demonstração de alta disponibilidade.
+- Persistência do fato e publicação AMQP não são uma transação atômica. O laboratório usa replay explícito; Transactional Outbox seria uma evolução.
+- O consumo é *at-least-once*. Constraints e idempotência impedem efeitos conhecidos duplicados, mas não oferecem garantia global de exatamente uma vez.
+- O provedor HTTP simulado mantém sua deduplicação somente em memória.
+- O projeto não inclui frontend, autenticação, cloud ou Kubernetes.

@@ -1,8 +1,0 @@
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=ACK_COMMIT
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=retirada outcome=ACK_DUPLICATA
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_COMMIT
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=comunicacao outcome=ACK_DUPLICATA
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=ACK_COMMIT
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=auditoria outcome=ACK_DUPLICATA
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-A outcome=ACK_COMMIT
-LOG eventId=aa730321-88eb-4996-bd8b-bb577254fd4d eventType=reserva.confirmada consumerId=Worker-B outcome=ACK_DUPLICATA

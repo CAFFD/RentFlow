@@ -1,7 +1,7 @@
-Consulte o [relatório da Etapa 00](etapa-00.md) para os comandos e resultados do diagnóstico e da preparação. Os experimentos de negócio estão previstos nas etapas seguintes.
+# Evidências selecionadas
 
-O [relatório da Etapa 01](etapa-01.md) e a [transcrição do EXP-01A](exp-01a.txt) registram a infraestrutura e a medição de roteamento.
+- [EXP-01A](exp-01a.txt): topologia e roteamento inicial de seis mensagens pela Management API.
+- [E01–E06](exp-nucleo-2d25e89d-2c75-4acd-acb1-e48579033b55.txt): roteamento pela aplicação Java, competing consumers, interrupção e recuperação, replay idempotente e falha antes/depois do ACK.
+- [E07](e07-deffdd7c-1a93-437c-bc60-59588b7bd054.txt): Circuit Breaker HTTP com `CLOSED`, `OPEN`, bloqueio, `HALF_OPEN` e recuperação.
 
-O [relatório consolidado das Etapas 02 a 04](etapas-02-04.md) aponta para o build, a transcrição do ensaio integrado e os três aceites individuais.
-
-A [evidência técnica da Etapa 05](etapa-05.md) reúne o experimento E07, a regressão final e as limitações do Circuit Breaker.
+Os arquivos são transcrições reais dos experimentos e não contêm credenciais.
