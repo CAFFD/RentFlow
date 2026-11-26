@@ -23,6 +23,31 @@ flowchart LR
 ```
 Uma instância PostgreSQL, schemas isolados por responsabilidade; nenhum consumidor consulta tabelas de outro. Isso simplifica o laboratório, mas é infraestrutura compartilhada e não demonstra isolamento de falhas do banco. Um broker em nó único não representa alta disponibilidade.
 
+## Sequência de publicação e consumo
+
+```mermaid
+sequenceDiagram
+    actor Cliente
+    participant P as Producer REST
+    participant DBP as PostgreSQL producer
+    participant R as RabbitMQ
+    participant C as Consumidor
+    participant DBC as PostgreSQL consumidor
+
+    Cliente->>P: POST /events/{eventType}
+    P->>DBP: registra envelope e tentativa
+    P->>R: basic.publish persistent + mandatory
+    R-->>P: publisher confirm ou return
+    P->>DBP: registra resultado da tentativa
+    P-->>Cliente: eventId, attemptId e estado
+    R->>C: entrega AMQP
+    C->>DBC: transação de idempotência e efeito
+    DBC-->>C: commit concluído
+    C-->>R: basicAck
+```
+
+O publisher confirm informa o resultado da publicação ao produtor; o consumer ACK confirma uma entrega ao consumidor. São sinais independentes. No consumidor, o ACK ocorre somente após o serviço transacional retornar com o commit concluído. O envio HTTP opcional da comunicação acontece posteriormente e passa pelo Circuit Breaker, sem envolver o listener ou seu ACK.
+
 | Fila | Bindings |
 |---|---|
 | retirada.queue | reserva.confirmada |

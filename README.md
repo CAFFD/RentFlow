@@ -1,6 +1,34 @@
-# RENTFLOW | Laboratório de mensageria
+# RENTFLOW
 
-Laboratório acadêmico de mensageria do Tema 07. A defesa está prevista para 25/11/2026, com cinco integrantes e até 20 minutos. O enunciado está em [Trabalho_07.docx](docs/enunciado/Trabalho_07.docx). O [relatório da Etapa 00](docs/evidencias/etapa-00.md) reúne diagnóstico, versões, resultados e correções.
+Projeto acadêmico do **Tema 07 — Locadora de Equipamentos**, desenvolvido para a disciplina de **Sistemas Distribuídos e Cloud Computing**. O RENTFLOW demonstra uma arquitetura orientada a eventos na qual um produtor publica fatos no RabbitMQ e cinco responsabilidades independentes persistem seus próprios efeitos no PostgreSQL.
+
+## Equipe
+
+**CodeForge**
+
+- Gabriel Guarsoni Dadário
+- Bruno Cavalcante Nunes
+- Bruno Henrique Franco Paião
+- Matheus de Souza Lemos
+- Reinaldo Candeo Filho
+
+## Tecnologias
+
+- Java 21 e Spring Boot 3.5.16
+- Spring Web, Spring AMQP, Spring JDBC e Actuator
+- RabbitMQ 4.4.0 com AMQP 0-9-1 e Management Plugin
+- PostgreSQL 16.11
+- Resilience4j 2.4.0 no diferencial de notificações HTTP
+- Maven Wrapper 3.9.9, Docker Engine e Docker Compose
+
+## Pré-requisitos
+
+- Windows com PowerShell
+- Eclipse Temurin JDK 21 com `JAVA_HOME` configurado
+- Docker Desktop com Docker Engine e Compose disponíveis
+- Portas locais livres: `5672`, `15672`, `15432` e `8080` a `8090`
+
+O enunciado original está em [Trabalho_07.docx](docs/enunciado/Trabalho_07.docx). A [arquitetura](docs/ARQUITETURA.md), os [contratos](docs/CONTRATOS.md), os [experimentos](docs/EXPERIMENTOS.md) e o [guia do código](docs/GUIA-DO-CODIGO.md) complementam este README.
 
 Repositório: https://github.com/CAFFD/RentFlow
 
@@ -30,7 +58,7 @@ docker version
 docker compose version
 ```
 
-O Maven lê o POM agregador e constrói os módulos em uma execução. Cada aplicação tem seu próprio método `main` e seu próprio JAR. O esqueleto inicia o contexto Spring e pode encerrar normalmente, pois ainda não há servidor HTTP nem listener. A preparação usará o mesmo JAR em dois processos ligados à mesma fila.
+O Maven lê o POM agregador e constrói os nove projetos do reactor em uma execução. Cada aplicação possui seu próprio método `main` e JAR executável. O mesmo JAR de preparação é iniciado como `Worker-A` e `Worker-B`; ambos consomem a mesma fila e compartilham a constraint que impede tarefas duplicadas.
 
 Consulte o [backlog](BACKLOG.md) antes de iniciar qualquer etapa. Os testes de roteamento, concorrência, interrupção e duplicidade têm seus protocolos em [Experimentos](docs/EXPERIMENTOS.md).
 
@@ -53,6 +81,12 @@ A partir da raiz do projeto, com Docker Desktop em execução, use os comandos a
 | `.\scripts\parar.ps1` | Para exclusivamente os dois serviços do projeto e preserva os volumes. Para retomar, execute iniciar.ps1. |
 
 O painel fica em http://127.0.0.1:15672/ e usa o usuário e a senha RabbitMQ do arquivo local `.env`. O Compose fixa os endereços em loopback. O PostgreSQL responde em 127.0.0.1:15432 no Windows e em postgres:5432 na rede do projeto. Para conferir a configuração sem exibir os valores das variáveis, execute `docker compose config --quiet`. Uma falha nos scripts interrompe a execução com erro.
+
+### Variáveis de ambiente
+
+O arquivo versionado `.env.example` contém somente valores fictícios de laboratório e as portas locais. Na primeira execução, `scripts/iniciar.ps1` cria o arquivo privado `.env` e substitui as duas senhas por valores aleatórios. Não copie credenciais reais para `.env.example` e não versione `.env` nem `.runtime/`.
+
+As definições principais ficam em `infra/rabbitmq/definitions.json`, sem usuários, senhas ou hashes. `iniciar.ps1` importa esse arquivo de modo idempotente com `rabbitmqctl import_definitions`. Depois, `preparar-nucleo.ps1` importa `infra/rabbitmq/estacionamento.json`, que acrescenta somente a DLX, a fila de estacionamento e a política de falhas. Em uma instância limpa, execute os dois scripts nesta ordem.
 
 **Limpeza das mensagens de teste.** Cada publicação do EXP-01A recebe um identificador de execução e prazo de uma hora. Mantenha o broker disponível, aguarde uma hora após a última publicação e confira no painel que Ready e Unacked são zero nas cinco filas antes de repetir. O prazo vale exclusivamente para essas mensagens. Se houver dados de outra origem, preserve-os e use uma instância de laboratório separada para uma nova execução. Evite publicar durante a verificação. A [evidência de 24/11](docs/evidencias/exp-01a.txt) conserva o resultado após a expiração.
 
@@ -83,6 +117,24 @@ O preparador aplica `infra/sql/V*.sql` em ordem, dentro de transações. Registr
 | manutencao | 8083 | GET /effects |
 | auditoria | 8084 | GET /effects |
 | Worker-A e Worker-B | 8085 e 8086 | GET /effects, mesma fila e mesmo banco de preparação |
+
+### Publicar os quatro eventos obrigatórios
+
+Com todas as aplicações saudáveis:
+
+```powershell
+$confirmada = .\scripts\disparar.ps1 -Tipo reserva.confirmada
+$cancelada  = .\scripts\disparar.ps1 -Tipo reserva.cancelada
+$aprovada   = .\scripts\disparar.ps1 -Tipo inspecao.aprovada
+$reprovada  = .\scripts\disparar.ps1 -Tipo inspecao.reprovada
+```
+
+Cada resultado contém `eventId`, `attemptId`, estado e motivo da confirmação. Para consultar os efeitos de uma publicação:
+
+```powershell
+.\scripts\efeitos.ps1 -EventId $confirmada.eventId
+Invoke-RestMethod "http://127.0.0.1:8084/effects?eventId=$($confirmada.eventId)"
+```
 
 Cada processo oferece GET /actuator/health em 127.0.0.1. Para iniciar um único JAR em outra porta, use, por exemplo, `.\scripts\apps.ps1 iniciar Worker-B -Porta 8186` com a instância parada. A demonstração automatizada usa as portas padrão. Identidade do processo, token, porta e caminho de log ficam em .runtime. Cada partida cria arquivos de stdout e stderr individuais.
 
@@ -120,3 +172,11 @@ O circuito `notificationProvider` usa janela de quatro chamadas, mínimo de quat
 O endpoint `POST /notifications/{eventId}/dispatch` reivindica atomicamente um aviso e evita despachos simultâneos. `GET /notifications/{eventId}` mostra seu estado; `GET /circuit-breaker` mostra estado, métricas e transições. O provedor em `127.0.0.1:8090` oferece os modos saudável e indisponível por meio de `scripts/provedor.ps1`. Ele deduplica pela chave `Idempotency-Key`, mas mantém esse estado apenas em memória.
 
 A [evidência da Etapa 05](docs/evidencias/etapa-05.md) registra o E07 e a regressão final. Para desabilitar a integração sem afetar o fluxo original, reinicie apenas a comunicação sem `-Notificacoes`.
+
+## Limitações
+
+- RabbitMQ e PostgreSQL executam em nó único; o projeto não demonstra alta disponibilidade da infraestrutura.
+- A gravação do fato no PostgreSQL e a publicação AMQP não formam uma transação atômica. O replay explícito trata a recuperação do laboratório; uma evolução seria Transactional Outbox.
+- O processamento é *at-least-once*. Constraints e idempotência evitam repetir efeitos conhecidos, mas não constituem entrega exatamente uma vez.
+- O provedor HTTP simulado deduplica apenas em memória. Existe uma janela entre o sucesso externo e a atualização local.
+- A interface do projeto é REST e scripts PowerShell; não há frontend, autenticação, cloud ou Kubernetes.
